@@ -1,0 +1,1415 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Outfit Plan</title>
+    <style>
+:root {
+  color-scheme: light;
+  --paper: #f2e4e9;
+  --surface: #fffafb;
+  --soft: #f7f1f3;
+  --milk: #fffdfd;
+  --line: rgba(160, 160, 163, 0.23);
+  --line-strong: rgba(95, 95, 96, 0.3);
+  --ink: #5f5f60;
+  --ink-strong: #434344;
+  --muted: #a0a0a3;
+  --mist: #bfbfbe;
+  --accent-soft: #f8edf1;
+  --shadow: 0 18px 46px rgba(95, 95, 96, 0.1);
+  --shadow-soft: 0 8px 22px rgba(95, 95, 96, 0.07);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background:
+    linear-gradient(180deg, var(--paper) 0%, #f7eef2 42%, #fff9fb 100%);
+  color: var(--ink);
+  font-family:
+    ui-rounded, "SF Pro Rounded", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  margin: 0 auto;
+  max-width: 820px;
+  padding: 24px 14px 38px;
+}
+
+.app-header,
+.section-card,
+.lesson-card,
+.packing-card {
+  background: rgba(255, 250, 251, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+}
+
+.app-header {
+  padding: 22px;
+  position: relative;
+}
+
+.app-header::before {
+  display: none;
+}
+
+.eyebrow {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: 10px;
+  font-weight: 800;
+  gap: 7px;
+  letter-spacing: 0;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  background: var(--ink);
+  border-radius: 50%;
+  content: "";
+  height: 7px;
+  width: 7px;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 0;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(34px, 10vw, 52px);
+  font-weight: 860;
+  line-height: 1;
+  padding-top: 10px;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 840;
+  line-height: 1.1;
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 1.16;
+}
+
+.trip-tabs {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) 52px;
+  margin: 0 -22px;
+  padding: 0 22px 3px;
+}
+
+.trip-tab-list {
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.trip-tab-list::-webkit-scrollbar {
+  height: 0;
+}
+
+.trip-tab,
+.add-trip-button {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  color: var(--ink);
+  min-height: 58px;
+  min-width: 140px;
+  padding: 11px 13px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.trip-tab {
+  background: var(--soft);
+  display: grid;
+  flex: 0 0 140px;
+  gap: 2px;
+  box-shadow: var(--shadow-soft);
+}
+
+.trip-tab.is-active {
+  background: var(--accent-soft);
+  border-color: rgba(95, 95, 96, 0.22);
+}
+
+.trip-tab strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.trip-tab span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.add-trip-button {
+  align-items: center;
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+  display: inline-flex;
+  font-size: 24px;
+  font-weight: 800;
+  height: 52px;
+  justify-content: center;
+  min-height: 52px;
+  min-width: 52px;
+  padding: 0;
+  width: 52px;
+}
+
+.trip-meta {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(120px, 0.82fr) minmax(0, 1.18fr);
+  margin-top: 18px;
+}
+
+label {
+  color: var(--muted);
+  display: grid;
+  font-size: 12px;
+  font-weight: 760;
+  gap: 6px;
+}
+
+input {
+  background: var(--milk);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 720;
+  outline: 0;
+  padding: 12px 14px;
+  width: 100%;
+}
+
+input:focus {
+  background: #fff;
+  border-color: rgba(95, 95, 96, 0.38);
+  box-shadow: 0 0 0 5px rgba(242, 228, 233, 0.8);
+}
+
+.date-range {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.date-picker {
+  align-items: center;
+  background: var(--milk);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  color: var(--ink);
+  display: flex;
+  font-size: 14px;
+  font-weight: 720;
+  min-height: 44px;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 12px;
+  position: relative;
+}
+
+.date-picker::after {
+  background: var(--muted);
+  border-radius: 999px;
+  content: "";
+  height: 5px;
+  margin-left: auto;
+  opacity: 0.65;
+  width: 5px;
+}
+
+.date-picker input {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  height: 100%;
+  inset: 0;
+  opacity: 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.date-picker:focus-within {
+  background: #fff;
+  border-color: rgba(95, 95, 96, 0.38);
+  box-shadow: 0 0 0 5px rgba(242, 228, 233, 0.8);
+}
+
+.date-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trip-footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.trip-summary {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 720;
+}
+
+.text-button {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 720;
+  padding: 7px 0;
+}
+
+.view-switch {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display: grid;
+  gap: 4px;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 16px;
+  padding: 4px;
+}
+
+.view-tab {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 740;
+  min-height: 38px;
+}
+
+.view-tab.is-active {
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+  font-weight: 780;
+}
+
+.view-panel {
+  display: none;
+}
+
+.view-panel.is-active {
+  display: block;
+}
+
+.section-card,
+.packing-card {
+  margin-top: 18px;
+  padding: 20px;
+}
+
+.section-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.primary-button {
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 14px;
+  color: #fff;
+  font-size: 21px;
+  font-weight: 820;
+  height: 44px;
+  line-height: 1;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0;
+  white-space: nowrap;
+  width: 44px;
+}
+
+.add-trip-button:active,
+.primary-button:active {
+  background: var(--ink-strong);
+}
+
+.lesson-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.lesson-card {
+  background:
+    linear-gradient(180deg, rgba(255, 253, 253, 1), rgba(248, 241, 243, 0.96));
+  box-shadow: var(--shadow-soft);
+  padding: 18px 18px 16px;
+}
+
+.lesson-top {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr auto;
+}
+
+.class-name-input {
+  background: transparent;
+  border-color: transparent;
+  font-size: 19px;
+  font-weight: 780;
+  padding: 8px 0;
+}
+
+.class-name-input:focus {
+  background: var(--soft);
+  border-color: var(--line-strong);
+  box-shadow: none;
+  padding: 8px 10px;
+}
+
+.icon-text-button {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 0;
+}
+
+.outfit-list {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.outfit-field {
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 8px 10px;
+  grid-template-columns: 82px 1fr;
+  padding: 11px;
+}
+
+.outfit-field:last-child {
+  border-bottom: 0;
+}
+
+.outfit-field-label {
+  align-items: center;
+  color: #88888b;
+  display: flex;
+  font-size: 14px;
+  font-weight: 800;
+  gap: 5px;
+  min-width: 0;
+}
+
+.outfit-field-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.outfit-field.is-custom .outfit-field-name {
+  cursor: text;
+}
+
+.outfit-field-name-input {
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 780;
+  padding: 7px 6px;
+}
+
+.outfit-value-input {
+  background: #fff;
+  border-color: transparent;
+  box-shadow: inset 0 0 0 1px rgba(191, 191, 190, 0.28);
+  font-size: 15px;
+  font-weight: 680;
+  min-height: 44px;
+  padding: 10px 14px;
+}
+
+.outfit-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  grid-column: 2;
+}
+
+.outfit-suggestions:empty {
+  display: none;
+}
+
+.suggestion-chip {
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(191, 191, 190, 0.26);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 680;
+  min-height: 28px;
+  padding: 0 10px;
+}
+
+.remove-field-button {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  display: none;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0 3px;
+}
+
+.outfit-field.is-custom .remove-field-button {
+  display: inline-flex;
+}
+
+.add-outfit-field {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  border-color: var(--line-strong);
+  color: var(--ink);
+  font-weight: 820;
+  margin-top: 10px;
+  min-height: 38px;
+  padding: 0 16px;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.packing-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.packing-group {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  display: grid;
+  padding: 14px 14px 8px;
+}
+
+.packing-group h3 {
+  color: var(--ink);
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.packing-item {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid rgba(160, 160, 163, 0.16);
+  display: grid;
+  font-size: 14px;
+  font-weight: 680;
+  grid-template-columns: 1fr auto;
+  min-height: 36px;
+  padding: 9px 0;
+}
+
+.item-name {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+}
+
+.item-name::before {
+  background: var(--mist);
+  border-radius: 50%;
+  content: "";
+  height: 5px;
+  opacity: 0.8;
+  width: 5px;
+}
+
+.item-count {
+  background: var(--mist);
+  border-radius: 999px;
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 6px;
+}
+
+.item-count:empty {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .app-shell {
+    max-width: 980px;
+  }
+
+  .lesson-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .packing-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 430px) {
+  .app-shell {
+    padding: 10px 8px 28px;
+  }
+
+  .app-header,
+  .section-card,
+  .packing-card,
+  .lesson-card {
+    padding: 16px;
+  }
+
+  .trip-meta {
+    grid-template-columns: minmax(108px, 0.78fr) minmax(0, 1.22fr);
+  }
+
+  .outfit-field {
+    grid-template-columns: 72px 1fr;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div class="trip-tabs" id="tripTabs" aria-label="旅行页签"></div>
+
+        <div class="trip-meta">
+          <label>
+            城市
+            <input id="tripCity" type="text" autocomplete="off" />
+          </label>
+          <label class="date-field">
+            日期
+            <span class="date-range">
+              <span class="date-picker">
+                <span id="tripStartDateText" class="date-text"></span>
+                <input id="tripStartDate" type="date" autocomplete="off" aria-label="开始日期" />
+              </span>
+              <span class="date-picker">
+                <span id="tripEndDateText" class="date-text"></span>
+                <input id="tripEndDate" type="date" autocomplete="off" aria-label="结束日期" />
+              </span>
+            </span>
+          </label>
+        </div>
+
+        <div class="trip-footer">
+          <span class="trip-summary" id="tripSummary"></span>
+          <button id="deleteTripButton" class="text-button" type="button">删除旅行</button>
+        </div>
+
+        <div class="view-switch" aria-label="视图切换">
+          <button class="view-tab is-active" data-view-tab="outfits" type="button">Outfits</button>
+          <button class="view-tab" data-view-tab="packing" type="button">行李清单</button>
+          </div>
+      </header>
+
+      <section class="section-card view-panel is-active" data-view-panel="outfits" aria-label="Outfits">
+        <div class="section-heading">
+          <div>
+            <h2>Outfits</h2>
+          </div>
+          <button id="addClassButton" class="primary-button" type="button" aria-label="新增 Outfit" title="新增 Outfit">+</button>
+        </div>
+        <div class="lesson-list" id="lessonCards"></div>
+      </section>
+
+      <section class="packing-card view-panel" data-view-panel="packing" aria-label="行李清单">
+        <div class="section-heading">
+          <div>
+            <h2>行李清单</h2>
+          </div>
+        </div>
+        <div class="packing-list" id="packingList"></div>
+      </section>
+    </main>
+
+    <template id="tripTabTemplate">
+      <button class="trip-tab" type="button">
+        <strong class="trip-tab-city"></strong>
+        <span class="trip-tab-dates"></span>
+      </button>
+    </template>
+
+    <template id="lessonCardTemplate">
+      <article class="lesson-card">
+        <div class="lesson-top">
+          <input class="class-name-input" data-class-name="true" type="text" autocomplete="off" />
+          <button class="icon-text-button delete-class-button" type="button">删除</button>
+        </div>
+        <div class="outfit-list"></div>
+        <button class="add-outfit-field" type="button">新增类目</button>
+      </article>
+    </template>
+
+    <template id="outfitFieldTemplate">
+      <div class="outfit-field">
+        <div class="outfit-field-label">
+          <span class="outfit-field-name"></span>
+          <input class="outfit-field-name-input" type="text" autocomplete="off" />
+          <button class="remove-field-button" type="button" title="删除字段">×</button>
+        </div>
+        <input class="outfit-value-input" type="text" autocomplete="off" />
+        <div class="outfit-suggestions"></div>
+      </div>
+    </template>
+
+    <template id="packingItemTemplate">
+      <div class="packing-item">
+        <span class="item-name"></span>
+        <span class="item-count"></span>
+      </div>
+    </template>
+    <script>
+const STORAGE_KEY = "travel-packing-planner-v4";
+const LEGACY_KEYS = ["travel-packing-planner-v3", "travel-packing-planner-v2", "dance-trip-closet-v1"];
+
+const DEFAULT_OUTFIT_FIELDS = [
+  { id: "top", label: "上衣" },
+  { id: "bottom", label: "下装" },
+  { id: "shoes", label: "鞋子" },
+  { id: "underwear", label: "内衣" },
+  { id: "hat", label: "帽子" },
+];
+
+const sampleData = {
+  activeTripId: "trip-tokyo",
+  trips: [
+    {
+      id: "trip-tokyo",
+      city: "东京",
+      startDate: "2026-08-12",
+      endDate: "2026-08-16",
+      dates: "8月12日 - 8月16日",
+      createdAt: 1786473600000,
+      outfitFields: [...DEFAULT_OUTFIT_FIELDS, { id: "knee-pad", label: "护具" }],
+      classes: [
+        {
+          id: "tokyo-class-1",
+          className: "Jazz Funk",
+          outfit: {
+            top: "黑色短背心",
+            bottom: "灰色工装裤",
+            shoes: "黑色跳舞鞋",
+            underwear: "运动内衣",
+            hat: "",
+            "knee-pad": "",
+          },
+        },
+        {
+          id: "tokyo-class-2",
+          className: "Heels",
+          outfit: {
+            top: "红色长袖上衣",
+            bottom: "黑色短裤",
+            shoes: "Heels 练习鞋",
+            underwear: "运动内衣",
+            hat: "",
+            "knee-pad": "黑色护膝",
+          },
+        },
+      ],
+    },
+  ],
+};
+
+let state = loadState();
+let editingFieldId = "";
+let activeView = "outfits";
+
+const fields = {
+  tripCity: document.querySelector("#tripCity"),
+  tripStartDate: document.querySelector("#tripStartDate"),
+  tripEndDate: document.querySelector("#tripEndDate"),
+  tripStartDateText: document.querySelector("#tripStartDateText"),
+  tripEndDateText: document.querySelector("#tripEndDateText"),
+  tripSummary: document.querySelector("#tripSummary"),
+  tripTabs: document.querySelector("#tripTabs"),
+  lessonCards: document.querySelector("#lessonCards"),
+  packingList: document.querySelector("#packingList"),
+  viewTabs: [...document.querySelectorAll("[data-view-tab]")],
+  viewPanels: [...document.querySelectorAll("[data-view-panel]")],
+};
+
+const tripTabTemplate = document.querySelector("#tripTabTemplate");
+const lessonCardTemplate = document.querySelector("#lessonCardTemplate");
+const outfitFieldTemplate = document.querySelector("#outfitFieldTemplate");
+const packingItemTemplate = document.querySelector("#packingItemTemplate");
+
+document.querySelector("#deleteTripButton").addEventListener("click", deleteActiveTrip);
+document.querySelector("#addClassButton").addEventListener("click", addClass);
+document.querySelectorAll(".date-picker").forEach((picker) => {
+  picker.addEventListener("click", () => {
+    const input = picker.querySelector("input");
+    if (typeof input.showPicker === "function") {
+      input.showPicker();
+    } else {
+      input.focus();
+      input.click();
+    }
+  });
+});
+fields.viewTabs.forEach((button) => {
+  button.addEventListener("click", () => setActiveView(button.dataset.viewTab));
+});
+
+[fields.tripCity, fields.tripStartDate, fields.tripEndDate].forEach((input) => {
+  input.addEventListener("input", () => {
+    const trip = getActiveTrip();
+    if (!trip) return;
+    trip.city = fields.tripCity.value;
+    trip.startDate = fields.tripStartDate.value;
+    trip.endDate = fields.tripEndDate.value;
+    trip.dates = formatDateRange(trip.startDate, trip.endDate);
+    renderDateText();
+    saveAndRender(false);
+  });
+});
+
+fields.lessonCards.addEventListener("input", (event) => {
+  const trip = getActiveTrip();
+  if (!trip) return;
+
+  const classId = event.target.dataset.classId;
+  const classItem = trip.classes.find((item) => item.id === classId);
+
+  if (event.target.dataset.className && classItem) {
+    classItem.className = event.target.value;
+  }
+
+  if (event.target.dataset.outfitField && classItem) {
+    classItem.outfit ||= {};
+    classItem.outfit[event.target.dataset.outfitField] = event.target.value;
+    syncSuggestionVisibility(event.target);
+  }
+
+  if (event.target.dataset.outfitFieldName) {
+    renameCustomField(event.target.dataset.outfitFieldName, event.target.value);
+  }
+
+  saveAndRender(false);
+});
+
+fields.lessonCards.addEventListener("click", (event) => {
+  const classId = event.target.dataset.deleteClass;
+  const addFieldClassId = event.target.dataset.addOutfitField;
+  const removeFieldId = event.target.dataset.removeField;
+  const suggestion = event.target.closest("[data-suggestion-value]");
+
+  if (classId) deleteClass(classId);
+  if (addFieldClassId) addCustomField(addFieldClassId);
+  if (removeFieldId) removeCustomField(removeFieldId);
+  if (suggestion) {
+    addSuggestedItem(suggestion.dataset.suggestionClass, suggestion.dataset.suggestionField, suggestion.dataset.suggestionValue);
+  }
+});
+
+fields.lessonCards.addEventListener("dblclick", (event) => {
+  const fieldId = event.target.dataset.editField;
+  if (fieldId) editCustomFieldName(fieldId);
+});
+
+fields.lessonCards.addEventListener("keydown", (event) => {
+  const fieldId = event.target.dataset.outfitFieldName;
+  if (fieldId && event.key === "Enter") {
+    event.preventDefault();
+    finishCustomFieldNameEdit(fieldId);
+  }
+});
+
+fields.lessonCards.addEventListener("focusout", (event) => {
+  const fieldId = event.target.dataset.outfitFieldName;
+  if (fieldId) finishCustomFieldNameEdit(fieldId);
+  if (event.relatedTarget?.closest?.("[data-suggestion-value]")) return;
+  if (event.target.dataset.outfitField) {
+    renderLessons();
+    renderPacking();
+    renderView();
+  }
+});
+
+function loadState() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) return normalizeState(JSON.parse(stored));
+
+    for (const key of LEGACY_KEYS) {
+      const legacy = localStorage.getItem(key);
+      if (legacy) return normalizeState(JSON.parse(legacy));
+    }
+  } catch {
+    return structuredClone(sampleData);
+  }
+  return structuredClone(sampleData);
+}
+
+function normalizeState(data) {
+  const normalized = { ...structuredClone(sampleData), ...data };
+  normalized.trips = Array.isArray(data.trips) && data.trips.length ? data.trips : migrateSingleTrip(data);
+  normalized.trips.forEach(normalizeTrip);
+  normalized.activeTripId ||= getSortedTrips(normalized.trips)[0]?.id || "";
+  return normalized;
+}
+
+function migrateSingleTrip(data) {
+  if (!data.trip && !data.classes) return structuredClone(sampleData.trips);
+  return [
+    {
+      id: "trip-migrated",
+      city: data.trip?.city || "",
+      dates: data.trip?.dates || "",
+      startDate: "",
+      endDate: "",
+      createdAt: Date.now(),
+      outfitFields: DEFAULT_OUTFIT_FIELDS,
+      classes: data.classes || [],
+    },
+  ];
+}
+
+function normalizeTrip(trip) {
+  trip.id ||= `trip-${Date.now()}`;
+  trip.createdAt ||= Date.now();
+  hydrateTripDates(trip);
+  trip.classes ||= [];
+  trip.outfitFields = addLegacyFieldsIfNeeded(trip);
+  trip.outfitFields = normalizeOutfitFields(trip.outfitFields);
+  trip.classes = trip.classes.map((classItem) => normalizeClassItem(classItem, trip.outfitFields));
+}
+
+function addLegacyFieldsIfNeeded(trip) {
+  const fieldsFromData = Array.isArray(trip.outfitFields) ? [...trip.outfitFields] : [];
+  const legacyFields = [
+    ["extras", "配饰"],
+    ["backup", "备用衣物"],
+    ["smallThings", "小物"],
+  ];
+
+  legacyFields.forEach(([id, label]) => {
+    const hasValue = trip.classes.some((classItem) => classItem[id]);
+    const alreadyExists = fieldsFromData.some((field) => field.id === id);
+    if (hasValue && !alreadyExists) fieldsFromData.push({ id, label });
+  });
+
+  return fieldsFromData;
+}
+
+function normalizeOutfitFields(outfitFields) {
+  const byId = new Map(DEFAULT_OUTFIT_FIELDS.map((field) => [field.id, { ...field }]));
+  (Array.isArray(outfitFields) ? outfitFields : []).forEach((field) => {
+    if (!field?.id) return;
+    byId.set(field.id, { id: field.id, label: field.label || "" });
+  });
+  return [...byId.values()];
+}
+
+function normalizeClassItem(classItem, outfitFields) {
+  const migrated = { ...classItem };
+  migrated.className ||= "";
+  migrated.outfit ||= {};
+
+  const legacyMap = {
+    top: migrated.top,
+    bottom: migrated.bottom,
+    shoes: migrated.shoes,
+    extras: migrated.extras,
+    backup: migrated.backup,
+    smallThings: migrated.smallThings,
+  };
+  Object.entries(legacyMap).forEach(([key, value]) => {
+    if (!migrated.outfit[key] && value) migrated.outfit[key] = value;
+  });
+
+  outfitFields.forEach((field) => {
+    migrated.outfit[field.id] ||= "";
+  });
+
+  return migrated;
+}
+
+function saveAndRender(shouldRender = true) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  if (shouldRender) render();
+  if (!shouldRender) {
+    renderTripTabs();
+    renderSummary();
+    renderPacking();
+  }
+}
+
+function render() {
+  const trip = getActiveTrip();
+  if (!trip) return;
+
+  fields.tripCity.value = trip.city;
+  fields.tripStartDate.value = trip.startDate || "";
+  fields.tripEndDate.value = trip.endDate || "";
+  renderDateText();
+  renderTripTabs();
+  renderSummary();
+  renderLessons();
+  renderPacking();
+  renderView();
+}
+
+function setActiveView(view) {
+  activeView = view === "packing" ? "packing" : "outfits";
+  renderView();
+}
+
+function renderView() {
+  fields.viewTabs.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.viewTab === activeView);
+  });
+  fields.viewPanels.forEach((panel) => {
+    panel.classList.toggle("is-active", panel.dataset.viewPanel === activeView);
+  });
+}
+
+function renderTripTabs() {
+  fields.tripTabs.replaceChildren();
+  const list = document.createElement("div");
+  list.className = "trip-tab-list";
+
+  getSortedTrips().forEach((trip) => {
+    const node = tripTabTemplate.content.firstElementChild.cloneNode(true);
+    node.classList.toggle("is-active", trip.id === state.activeTripId);
+    node.querySelector(".trip-tab-city").textContent = trip.city || "—";
+    node.querySelector(".trip-tab-dates").textContent = trip.dates || "";
+    node.addEventListener("click", () => {
+      state.activeTripId = trip.id;
+      editingFieldId = "";
+      saveAndRender();
+    });
+    list.append(node);
+  });
+
+  const addButton = document.createElement("button");
+  addButton.className = "add-trip-button";
+  addButton.type = "button";
+  addButton.setAttribute("aria-label", "新增旅行");
+  addButton.title = "新增旅行";
+  addButton.textContent = "+";
+  addButton.addEventListener("click", addTrip);
+  fields.tripTabs.append(list);
+  fields.tripTabs.append(addButton);
+}
+
+function renderSummary() {
+  const trip = getActiveTrip();
+  const packing = buildPackingItems();
+  fields.tripSummary.textContent = `${trip?.classes.length || 0} 节课 · ${packing.length} 件行李`;
+}
+
+function renderDateText() {
+  fields.tripStartDateText.textContent = formatDateLabel(fields.tripStartDate.value);
+  fields.tripEndDateText.textContent = formatDateLabel(fields.tripEndDate.value);
+}
+
+function renderLessons() {
+  const trip = getActiveTrip();
+  fields.lessonCards.replaceChildren();
+  if (!trip) return;
+
+  trip.classes.forEach((classItem) => {
+    const card = lessonCardTemplate.content.firstElementChild.cloneNode(true);
+    card.querySelector(".class-name-input").value = classItem.className || "";
+    card.querySelector(".class-name-input").dataset.classId = classItem.id;
+    card.querySelector(".delete-class-button").dataset.deleteClass = classItem.id;
+    card.querySelector(".add-outfit-field").dataset.addOutfitField = classItem.id;
+    const list = card.querySelector(".outfit-list");
+    renderOutfitFields(list, trip, classItem);
+    fields.lessonCards.append(card);
+  });
+}
+
+function renderOutfitFields(container, trip, classItem) {
+  trip.outfitFields.forEach((field) => {
+    const node = outfitFieldTemplate.content.firstElementChild.cloneNode(true);
+    const valueInput = node.querySelector(".outfit-value-input");
+    const labelText = node.querySelector(".outfit-field-name");
+    const labelInput = node.querySelector(".outfit-field-name-input");
+    const removeButton = node.querySelector(".remove-field-button");
+    const suggestions = node.querySelector(".outfit-suggestions");
+    const custom = isCustomField(field.id);
+    const editing = custom && field.id === editingFieldId;
+
+    node.classList.toggle("is-custom", custom);
+    labelText.textContent = field.label || "—";
+    labelText.hidden = editing;
+    labelText.dataset.editField = field.id;
+    labelInput.value = field.label || "";
+    labelInput.hidden = !editing;
+    labelInput.dataset.outfitFieldName = field.id;
+    valueInput.value = classItem.outfit?.[field.id] || "";
+    valueInput.dataset.classId = classItem.id;
+    valueInput.dataset.outfitField = field.id;
+    removeButton.dataset.removeField = field.id;
+    renderSuggestionChips(suggestions, trip, field.id, classItem);
+
+    container.append(node);
+  });
+}
+
+function renderSuggestionChips(container, trip, fieldId, classItem) {
+  getOutfitSuggestions(trip, fieldId, classItem).forEach((name) => {
+    const chip = document.createElement("button");
+    chip.className = "suggestion-chip";
+    chip.type = "button";
+    chip.dataset.suggestionClass = classItem.id;
+    chip.dataset.suggestionField = fieldId;
+    chip.dataset.suggestionValue = name;
+    chip.textContent = name;
+    container.append(chip);
+  });
+}
+
+function renderPacking() {
+  const items = buildPackingItems();
+  const groups = groupBy(items, "group");
+  fields.packingList.replaceChildren();
+
+  Object.entries(groups).forEach(([groupName, groupItems]) => {
+    const group = document.createElement("section");
+    group.className = "packing-group";
+    const title = document.createElement("h3");
+    title.textContent = groupName;
+    group.append(title);
+
+    groupItems.forEach((item) => {
+      const node = packingItemTemplate.content.firstElementChild.cloneNode(true);
+      node.querySelector(".item-name").textContent = item.name;
+      node.querySelector(".item-count").textContent = "";
+      group.append(node);
+    });
+    fields.packingList.append(group);
+  });
+}
+
+function buildPackingItems() {
+  const trip = getActiveTrip();
+  if (!trip) return [];
+
+  const map = new Map();
+  trip.classes.forEach((classItem) => {
+    trip.outfitFields.forEach((field) => {
+      const groupName = field.label.trim();
+      if (!groupName) return;
+      splitItems(classItem.outfit?.[field.id]).forEach((name) => {
+        const itemKey = `${groupName}:${normalizeItemName(name)}`;
+        if (!map.has(itemKey)) map.set(itemKey, { key: itemKey, group: groupName, name, count: 1 });
+      });
+    });
+  });
+
+  return [...map.values()];
+}
+
+function getOutfitSuggestions(trip, fieldId, classItem) {
+  const currentItems = splitItems(classItem.outfit?.[fieldId]);
+  if (currentItems.length) return [];
+  const current = new Set(currentItems.map(normalizeItemName));
+  const suggestions = new Map();
+  trip.classes.forEach((item) => {
+    splitItems(item.outfit?.[fieldId]).forEach((name) => {
+      const key = normalizeItemName(name);
+      if (key && !current.has(key) && !suggestions.has(key)) suggestions.set(key, name);
+    });
+  });
+  return [...suggestions.values()].slice(0, 4);
+}
+
+function syncSuggestionVisibility(input) {
+  const field = input.closest(".outfit-field");
+  const suggestions = field?.querySelector(".outfit-suggestions");
+  if (!suggestions) return;
+  suggestions.hidden = Boolean(input.value.trim());
+}
+
+function addSuggestedItem(classId, fieldId, name) {
+  const trip = getActiveTrip();
+  const classItem = trip?.classes.find((item) => item.id === classId);
+  if (!trip || !classItem || !fieldId || !name) return;
+  classItem.outfit ||= {};
+  const currentItems = splitItems(classItem.outfit[fieldId]);
+  const exists = currentItems.some((item) => normalizeItemName(item) === normalizeItemName(name));
+  if (!exists) currentItems.push(name);
+  classItem.outfit[fieldId] = currentItems.join("、");
+  saveAndRender();
+}
+
+function splitItems(value) {
+  return String(value || "")
+    .split(/[,，、/]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function normalizeItemName(value) {
+  return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function groupBy(items, key) {
+  return items.reduce((acc, item) => {
+    acc[item[key]] ||= [];
+    acc[item[key]].push(item);
+    return acc;
+  }, {});
+}
+
+function getActiveTrip() {
+  return state.trips.find((trip) => trip.id === state.activeTripId) || getSortedTrips()[0];
+}
+
+function getSortedTrips(trips = state.trips) {
+  return [...trips].sort((a, b) => getTripRank(b) - getTripRank(a));
+}
+
+function getTripRank(trip) {
+  return extractDateRank(trip.startDate || trip.dates) || trip.createdAt || 0;
+}
+
+function extractDateRank(value) {
+  const text = String(value || "");
+  const iso = text.match(/20\d{2}[-/.]\d{1,2}[-/.]\d{1,2}/);
+  if (iso) return new Date(iso[0].replace(/[/.]/g, "-")).getTime();
+
+  const chinese = text.match(/(\d{1,2})\s*月\s*(\d{1,2})\s*日?/);
+  if (chinese) {
+    const month = Number(chinese[1]) - 1;
+    const day = Number(chinese[2]);
+    return new Date(new Date().getFullYear(), month, day).getTime();
+  }
+  return 0;
+}
+
+function hydrateTripDates(trip) {
+  trip.startDate ||= "";
+  trip.endDate ||= "";
+  if ((!trip.startDate || !trip.endDate) && trip.dates) {
+    const parsed = parseDateRange(trip.dates);
+    trip.startDate ||= parsed.startDate;
+    trip.endDate ||= parsed.endDate;
+  }
+  trip.dates = formatDateRange(trip.startDate, trip.endDate) || trip.dates || "";
+}
+
+function parseDateRange(value) {
+  const text = String(value || "");
+  const isoDates = [...text.matchAll(/20\d{2}[-/.]\d{1,2}[-/.]\d{1,2}/g)].map((match) =>
+    normalizeIsoDate(match[0]),
+  );
+  if (isoDates.length) return { startDate: isoDates[0] || "", endDate: isoDates[1] || isoDates[0] || "" };
+
+  const year = new Date().getFullYear();
+  const chineseDates = [...text.matchAll(/(\d{1,2})\s*月\s*(\d{1,2})\s*日?/g)].map((match) =>
+    toIsoDate(year, Number(match[1]), Number(match[2])),
+  );
+  return { startDate: chineseDates[0] || "", endDate: chineseDates[1] || chineseDates[0] || "" };
+}
+
+function normalizeIsoDate(value) {
+  const [year, month, day] = String(value).replace(/[/.]/g, "-").split("-").map(Number);
+  return toIsoDate(year, month, day);
+}
+
+function toIsoDate(year, month, day) {
+  if (!year || !month || !day) return "";
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+function formatDateRange(startDate, endDate) {
+  const start = formatDateLabel(startDate);
+  const end = formatDateLabel(endDate);
+  if (start && end && start !== end) return `${start} - ${end}`;
+  return start || end || "";
+}
+
+function formatDateLabel(value) {
+  if (!value) return "";
+  const [, month, day] = String(value).split("-").map(Number);
+  if (!month || !day) return "";
+  return `${month}月${day}日`;
+}
+
+function addTrip() {
+  const id = `trip-${Date.now()}`;
+  state.trips.push({
+    id,
+    city: "",
+    startDate: "",
+    endDate: "",
+    dates: "",
+    createdAt: Date.now(),
+    outfitFields: structuredClone(DEFAULT_OUTFIT_FIELDS),
+    classes: [],
+  });
+  state.activeTripId = id;
+  editingFieldId = "";
+  saveAndRender();
+}
+
+function deleteActiveTrip() {
+  const trip = getActiveTrip();
+  if (!trip) return;
+  const ok = window.confirm("删除这趟旅行？");
+  if (!ok) return;
+  state.trips = state.trips.filter((item) => item.id !== trip.id);
+  if (!state.trips.length) {
+    const id = `trip-${Date.now()}`;
+    state.trips.push({
+      id,
+      city: "",
+      startDate: "",
+      endDate: "",
+      dates: "",
+      createdAt: Date.now(),
+      outfitFields: structuredClone(DEFAULT_OUTFIT_FIELDS),
+      classes: [],
+    });
+    state.activeTripId = id;
+  } else {
+    state.activeTripId = getSortedTrips()[0]?.id || "";
+  }
+  editingFieldId = "";
+  saveAndRender();
+}
+
+function addClass() {
+  const trip = getActiveTrip();
+  if (!trip) return;
+  const id = `class-${Date.now()}`;
+  const outfit = {};
+  trip.outfitFields.forEach((field) => {
+    outfit[field.id] = "";
+  });
+  trip.classes.push({ id, className: "", outfit });
+  saveAndRender();
+}
+
+function deleteClass(id) {
+  const trip = getActiveTrip();
+  if (!trip) return;
+  trip.classes = trip.classes.filter((item) => item.id !== id);
+  saveAndRender();
+}
+
+function addCustomField(classId) {
+  const trip = getActiveTrip();
+  if (!trip) return;
+  const id = `custom-${Date.now()}`;
+  trip.outfitFields.push({ id, label: "" });
+  trip.classes.forEach((classItem) => {
+    classItem.outfit ||= {};
+    classItem.outfit[id] = "";
+  });
+  editingFieldId = id;
+  saveAndRender();
+  window.requestAnimationFrame(() => {
+    const card = fields.lessonCards.querySelector(`[data-class-id="${classId}"]`)?.closest(".lesson-card");
+    const input = card?.querySelector(`[data-outfit-field-name="${id}"]`);
+    input?.focus();
+  });
+}
+
+function renameCustomField(id, label) {
+  const trip = getActiveTrip();
+  if (!trip || !isCustomField(id)) return;
+  const field = trip.outfitFields.find((item) => item.id === id);
+  if (!field) return;
+  field.label = label;
+  saveAndRender(false);
+}
+
+function editCustomFieldName(id) {
+  if (!isCustomField(id)) return;
+  editingFieldId = id;
+  renderLessons();
+  window.requestAnimationFrame(() => {
+    const input = fields.lessonCards.querySelector(`[data-outfit-field-name="${id}"]`);
+    input?.focus();
+    input?.select();
+  });
+}
+
+function finishCustomFieldNameEdit(id) {
+  if (editingFieldId !== id) return;
+  editingFieldId = "";
+  renderLessons();
+  renderPacking();
+}
+
+function removeCustomField(id) {
+  const trip = getActiveTrip();
+  if (!trip || !isCustomField(id)) return;
+  if (editingFieldId === id) editingFieldId = "";
+  trip.outfitFields = trip.outfitFields.filter((field) => field.id !== id);
+  trip.classes.forEach((classItem) => {
+    if (classItem.outfit) delete classItem.outfit[id];
+  });
+  saveAndRender();
+}
+
+function isCustomField(id) {
+  return !DEFAULT_OUTFIT_FIELDS.some((field) => field.id === id);
+}
+
+render();
+
+    </script>
+  </body>
+</html>
